@@ -52,9 +52,9 @@ describe('Simulation Stores', () => {
     it('should maintain all parameter keys', () => {
       const value = get(parameters);
       const requiredKeys = [
-        'r_r', 'r_d', 'r_c', 'r_w', 'alpha_ad', 'alpha_da',
-        'timeStep', 'randomWalkActive', 'randomWalkDormant', 'biasStrength', 'fe2DiffusionAmount',
-        'fe3Scale', 'fe3Variation'
+        'r_r', 'r_d', 'r_c', 'alpha_ad', 'alpha_da',
+        'timeStep', 'bacterialDiffusion', 'biasStrength', 'fe2Diffusion',
+        'fe3Scale', 'fe3Variation', 'initialActiveSeeds', 'seedPixelRadius'
       ];
 
       requiredKeys.forEach(key => {

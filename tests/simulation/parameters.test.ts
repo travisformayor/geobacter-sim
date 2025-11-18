@@ -43,9 +43,9 @@ describe('Parameter Configuration', () => {
   describe('defaultParameters', () => {
     it('should have all required parameter keys', () => {
       const requiredKeys = [
-        'r_r', 'r_d', 'r_c', 'r_w', 'alpha_ad', 'alpha_da',
-        'timeStep', 'randomWalkActive', 'randomWalkDormant', 'biasStrength', 'fe2DiffusionAmount',
-        'fe3Scale', 'fe3Variation'
+        'r_r', 'r_d', 'r_c', 'alpha_ad', 'alpha_da',
+        'timeStep', 'bacterialDiffusion', 'biasStrength', 'fe2Diffusion',
+        'fe3Scale', 'fe3Variation', 'initialActiveSeeds', 'seedPixelRadius'
       ];
 
       requiredKeys.forEach(key => {
@@ -66,17 +66,15 @@ describe('Parameter Configuration', () => {
       expect(defaultParameters.r_r).toBeGreaterThan(0);
       expect(defaultParameters.r_d).toBeGreaterThanOrEqual(0);
       expect(defaultParameters.r_c).toBeGreaterThan(0);
-      expect(defaultParameters.r_w).toBeGreaterThan(0);
       expect(defaultParameters.alpha_ad).toBeGreaterThanOrEqual(0);
       expect(defaultParameters.alpha_da).toBeGreaterThanOrEqual(0);
     });
 
     it('should have valid simulation parameter defaults', () => {
       expect(defaultParameters.timeStep).toBeGreaterThan(0);
-      expect(defaultParameters.randomWalkActive).toBeGreaterThanOrEqual(0);
-      expect(defaultParameters.randomWalkDormant).toBeGreaterThanOrEqual(0);
+      expect(defaultParameters.bacterialDiffusion).toBeGreaterThanOrEqual(0);
       expect(defaultParameters.biasStrength).toBeGreaterThanOrEqual(0);
-      expect(defaultParameters.fe2DiffusionAmount).toBeGreaterThanOrEqual(0);
+      expect(defaultParameters.fe2Diffusion).toBeGreaterThanOrEqual(0);
     });
 
     it('should have valid initial condition defaults', () => {

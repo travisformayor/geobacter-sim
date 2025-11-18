@@ -25,69 +25,65 @@ import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRe
 import type { SimulationParameters } from '../types';
 import { initializeFe3Field } from '../utils/math';
 import { defaultParameters } from './parameters';
+import noise from 'simplenoise';
 
 // Import shaders as strings
-import commonGLSL from '../shaders/common.glsl?raw';
-import reactionFragCode from '../shaders/reaction.frag?raw';
-import movementFragCode from '../shaders/movement.frag?raw';
-import diffusionFragCode from '../shaders/diffusion.frag?raw';
+// Using single combined compute shader following Jason Webb's pattern
+// https://github.com/jasonwebb/reaction-diffusion-playground
+import computeFragCode from '../shaders/compute.frag?raw';
 import displayFragCode from '../shaders/display.frag?raw';
+
+// Use fixed seed for Perlin noise (consistent pattern as params change)
+noise.seed(100);
 
 export class Simulation {
   private renderer: WebGLRenderer;
   private gpuCompute: GPUComputationRenderer;
   private stateVariable: any;
-  private movementPass: ShaderMaterial;
-  private diffusionPass: ShaderMaterial;
   private displayMesh: Mesh;
   private parameters: SimulationParameters;
+  private stepCount = 0;  // For debug logging
 
   constructor(renderer: WebGLRenderer, params: SimulationParameters = defaultParameters) {
+    console.log('[Simulation] Constructor starting');
     this.renderer = renderer;
     this.parameters = params;
 
     // 1. Use GPUComputationRenderer for ALL texture management
     this.gpuCompute = new GPUComputationRenderer(512, 512, renderer);
+    console.log('[Simulation] GPUComputationRenderer created');
 
     // 2. Use createTexture() helper - automatic Float32Array with proper settings
     const stateTexture = this.gpuCompute.createTexture();
+    console.log('[Simulation] State texture created, has data:', !!stateTexture.image.data);
+
+    // 3. Initialize texture data BEFORE adding variable
+    // This ensures addVariable gets the filled texture, not empty one
     if (stateTexture.image.data) {
       this.initializeFields(stateTexture.image.data as Float32Array);
+      stateTexture.needsUpdate = true;  // Tell GPU to upload modified data
+      console.log('[Simulation] Fields initialized, texture marked for update');
     }
 
-    // 3. Prepare shaders (concatenate common.glsl to compute shaders)
-    // String concatenation pattern - common in WebGL/Three.js projects
-    const reactionShader = commonGLSL + reactionFragCode;
-    const movementShader = commonGLSL + movementFragCode;
-    const diffusionShader = commonGLSL + diffusionFragCode;
-
-    // 4. Single variable with all 4 fields packed
+    // 4. Single variable with combined compute shader (reaction + movement + diffusion)
+    // Following Jason Webb's single-shader pattern
     this.stateVariable = this.gpuCompute.addVariable(
       'state',
-      reactionShader,
+      computeFragCode,
       stateTexture
     );
+    console.log('[Simulation] State variable added with combined compute shader');
 
     // 5. Set self-dependency for temporal updates
     this.gpuCompute.setVariableDependencies(this.stateVariable, [this.stateVariable]);
+    console.log('[Simulation] Variable dependencies set');
 
     // 6. Initialize uniforms with parameters
-    const reactionUniforms = this.stateVariable.material.uniforms;
-    this.updateUniforms(reactionUniforms, params);
+    const computeUniforms = this.stateVariable.material.uniforms;
+    this.updateUniforms(computeUniforms, params);
+    console.log('[Simulation] Compute shader uniforms initialized');
 
-    // 7. Additional compute passes using createShaderMaterial
-    this.movementPass = this.gpuCompute.createShaderMaterial(movementShader, {
-      state: { value: null },
-      resolution: { value: new Vector2(512, 512) }
-    });
-    this.diffusionPass = this.gpuCompute.createShaderMaterial(diffusionShader, {
-      state: { value: null },
-      resolution: { value: new Vector2(512, 512) }
-    });
-    this.updateUniforms(this.movementPass.uniforms, params);
-    this.updateUniforms(this.diffusionPass.uniforms, params);
-
-    // 8. Display mesh separate from compute pipeline
+    // 7. Display mesh separate from compute pipeline
     this.displayMesh = new Mesh(
       new PlaneGeometry(2, 2),
       new ShaderMaterial({
@@ -100,40 +96,53 @@ export class Simulation {
       })
     );
 
-    // 9. Initialize GPUComputationRenderer
+    // 8. Initialize GPUComputationRenderer
+    // This renders the initialValueTexture (stateTexture) into both ping-pong buffers
     const error = this.gpuCompute.init();
     if (error !== null) {
-      console.error('GPUComputationRenderer init error:', error);
+      console.error('[Simulation] GPUComputationRenderer init error:', error);
+    } else {
+      console.log('[Simulation] GPUComputationRenderer initialized (initial data in buffers)');
     }
+
+    // 9. Connect display mesh to show current GPU state
+    // Initial display shows "step 0" (the initialized data)
+    // Clicking Start will run compute() to advance to step 1, 2, 3...
+    this.updateDisplayTexture();
+    console.log('[Simulation] Display connected to show initial state (step 0)');
+
+    console.log('[Simulation] Constructor complete');
   }
 
   // Public API
 
   start(): void {
+    console.log('[Simulation] Starting animation loop');
     // Use Three.js built-in animation loop
     // Reference: https://threejs.org/docs/#api/en/renderers/WebGLRenderer.setAnimationLoop
     this.renderer.setAnimationLoop(() => this.step());
   }
 
-  stop(): void {
+  pause(): void {
+    console.log('[Simulation] Pausing animation loop');
     this.renderer.setAnimationLoop(null);
   }
 
   reset(): void {
-    // Reinitialize texture data
-    const stateTexture = this.gpuCompute.createTexture();
-    if (stateTexture.image.data) {
-      this.initializeFields(stateTexture.image.data as Float32Array);
-    }
-    // Note: GPUComputationRenderer doesn't have direct texture replacement API
-    // For now, this creates new texture but may need full reinit in practice
+    console.log('[Simulation] Reset called - need to reinitialize GPUComputationRenderer');
+    this.pause();
+
+    // Note: GPUComputationRenderer doesn't support runtime texture replacement
+    // For now, reset isn't fully functional - would need to recreate entire Simulation
+    // TODO: Either recreate Simulation instance or find GPUComputationRenderer reset method
+
+    this.stepCount = 0;
+    console.log('[Simulation] Reset - step count reset (texture reset not implemented)');
   }
 
   updateParameters(params: SimulationParameters): void {
     this.parameters = params;
     this.updateUniforms(this.stateVariable.material.uniforms, params);
-    this.updateUniforms(this.movementPass.uniforms, params);
-    this.updateUniforms(this.diffusionPass.uniforms, params);
   }
 
   getDisplayMesh(): Mesh {
@@ -143,54 +152,95 @@ export class Simulation {
   // Private methods
 
   private step(): void {
-    // All ping-ponging handled automatically
+    if (this.stepCount < 5) {
+      console.log('[Simulation] step() called, count:', this.stepCount);
+    }
+    this.stepCount++;
+
+    // Run one simulation step (reaction + movement + diffusion combined)
+    // Following Jason Webb's pattern: one compute() call per frame
     this.gpuCompute.compute();
 
-    // Additional passes using doRenderTarget
-    // Pattern from GPUComputationRenderer examples
-    const currentTarget = this.gpuCompute.getCurrentRenderTarget(this.stateVariable);
-    this.gpuCompute.doRenderTarget(this.movementPass, currentTarget);
-    this.gpuCompute.doRenderTarget(this.diffusionPass, currentTarget);
+    if (this.stepCount <= 5) {
+      console.log('[Simulation] gpuCompute.compute() done');
+    }
 
-    // Update display mesh with final texture
-    (this.displayMesh.material as ShaderMaterial).uniforms.state.value = currentTarget.texture;
+    // Update display to show new state
+    this.updateDisplayTexture();
+
+    if (this.stepCount === 1) {
+      console.log('[Simulation] First step complete, display updated');
+    }
+  }
+
+  private updateDisplayTexture(): void {
+    // Get current simulation state and set it on display mesh
+    const currentTexture = this.gpuCompute.getCurrentRenderTarget(this.stateVariable).texture;
+    (this.displayMesh.material as ShaderMaterial).uniforms.state.value = currentTexture;
   }
 
   private updateUniforms(uniforms: any, params: SimulationParameters): void {
-    // Update all parameter uniforms if they exist in the shader
-    if (uniforms.r_r) uniforms.r_r.value = params.r_r;
-    if (uniforms.r_d) uniforms.r_d.value = params.r_d;
-    if (uniforms.r_c) uniforms.r_c.value = params.r_c;
-    if (uniforms.r_w) uniforms.r_w.value = params.r_w;
-    if (uniforms.alpha_ad) uniforms.alpha_ad.value = params.alpha_ad;
-    if (uniforms.alpha_da) uniforms.alpha_da.value = params.alpha_da;
-    if (uniforms.timeStep) uniforms.timeStep.value = params.timeStep;
-    if (uniforms.randomWalkActive) uniforms.randomWalkActive.value = params.randomWalkActive;
-    if (uniforms.randomWalkDormant) uniforms.randomWalkDormant.value = params.randomWalkDormant;
-    if (uniforms.biasStrength) uniforms.biasStrength.value = params.biasStrength;
-    if (uniforms.fe2DiffusionAmount) uniforms.fe2DiffusionAmount.value = params.fe2DiffusionAmount;
-    if (uniforms.time) uniforms.time.value = performance.now() * 0.001; // For random seed variation
+    // Create or update uniforms (must create them before GPUComputationRenderer.init())
+    // Pattern from GPUComputationRenderer examples: variable.material.uniforms.x = { value: y }
+    uniforms.r_r = { value: params.r_r };
+    uniforms.r_d = { value: params.r_d };
+    uniforms.r_c = { value: params.r_c };
+    uniforms.r_w = { value: params.r_c };  // Fe2 production equals Fe3 consumption (mass balance)
+    uniforms.alpha_ad = { value: params.alpha_ad };
+    uniforms.alpha_da = { value: params.alpha_da };
+    uniforms.timeStep = { value: params.timeStep };
+    uniforms.bacterialDiffusion = { value: params.bacterialDiffusion };
+    uniforms.biasStrength = { value: params.biasStrength };
+    uniforms.fe2Diffusion = { value: params.fe2Diffusion };
+    uniforms.time = { value: performance.now() * 0.001 };
   }
 
   private initializeFields(data: Float32Array): void {
-    // Initialize using simplenoise for Perlin noise
-    // Import noise dynamically to get seeded instance
-    import('simplenoise').then(({ default: noise }) => {
-      noise.seed(Math.random());
+    console.log('[Simulation] initializeFields called, data length:', data.length);
 
-      const textureSize = 512;
-      const { fe3Scale, fe3Variation } = this.parameters;
+    const textureSize = 512;
+    const { fe3Scale, fe3Variation, initialActiveSeeds, seedPixelRadius } = this.parameters;
 
-      // Use our math utility for Fe3 initialization
-      const initialData = initializeFe3Field(
-        textureSize,
-        fe3Scale,
-        fe3Variation,
-        noise
-      );
+    // Use our math utility for Fe3 initialization (synchronous now)
+    const initialData = initializeFe3Field(
+      textureSize,
+      fe3Scale,
+      fe3Variation,
+      noise
+    );
 
-      // Copy initialized data
-      data.set(initialData);
-    });
+    console.log('[Simulation] Perlin data generated');
+
+    // Place Active bacteria seed patches (circular areas, not single pixels)
+    for (let i = 0; i < initialActiveSeeds; i++) {
+      const centerX = Math.floor(Math.random() * textureSize);
+      const centerY = Math.floor(Math.random() * textureSize);
+
+      // Fill circular area around center
+      for (let dy = -seedPixelRadius; dy <= seedPixelRadius; dy++) {
+        for (let dx = -seedPixelRadius; dx <= seedPixelRadius; dx++) {
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist <= seedPixelRadius) {
+            const x = centerX + dx;
+            const y = centerY + dy;
+
+            // Check bounds
+            if (x >= 0 && x < textureSize && y >= 0 && y < textureSize) {
+              const pixelIndex = y * textureSize + x;
+              const pixelStart = pixelIndex * 4;
+              // Set Active density (falloff from center for smooth edges)
+              const density = 1.0 - (dist / seedPixelRadius) * 0.5;  // 1.0 at center, 0.5 at edge
+              initialData[pixelStart + 3] = Math.max(initialData[pixelStart + 3], density);
+            }
+          }
+        }
+      }
+    }
+
+    console.log('[Simulation] Placed', initialActiveSeeds, 'active seed patches with radius', seedPixelRadius, 'pixels');
+
+    // Copy initialized data
+    data.set(initialData);
+    console.log('[Simulation] Data copied to texture');
   }
 }
