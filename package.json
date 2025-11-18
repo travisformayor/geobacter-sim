@@ -22,7 +22,9 @@
     "vitest": "^1.0.0"
   },
   "dependencies": {
+    "katex": "^0.16.25",
     "simplenoise": "^1.0.1",
+    "svelte-katex": "^0.2.0",
     "three": "^0.160.0"
   }
 }
