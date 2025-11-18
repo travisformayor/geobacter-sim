@@ -1,0 +1,14 @@
+# System
+.DS_Store
+
+# Reference
+docs/
+
+# Dependencies
+node_modules/
+
+# Build Files (Svelte + Vite + TypeScript)
+dist/
+build/
+.out/
+.svelte-kit/
