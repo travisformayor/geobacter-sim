@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1.2 -2.4 20 13.999999"
+   version="1.1"
+   x="0px"
+   y="0px"
+   id="svg2"
+   sodipodi:docname="noun-eye-4763825.svg"
+   width="20"
+   height="14"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="12.837468"
+     inkscape:cx="7.8675951"
+     inkscape:cy="6.5043979"
+     inkscape:window-width="1440"
+     inkscape:window-height="847"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title1">Ico/Actions/Hide</title>
+  <g
+     stroke="none"
+     stroke-width="1"
+     fill="none"
+     fill-rule="evenodd"
+     id="g1"
+     transform="translate(-3.2,-8.166309)">
+    <path
+       d="m 20.169937,8.4425864 c 0.307908,-0.4584878 0.929195,-0.5805569 1.387683,-0.2726489 0.458488,0.307908 0.580557,0.9291946 0.272649,1.3876824 -1.047011,1.5590431 -2.151567,2.8408091 -3.31254,3.8390791 l 1.098054,1.901048 c 0.276142,0.478293 0.112267,1.089883 -0.366026,1.366026 -0.444129,0.256418 -1.003193,0.133433 -1.301888,-0.268393 l -0.06414,-0.09763 -0.989018,-1.713022 c -1.239975,0.755405 -2.538446,1.211199 -3.894204,1.360724 L 13.0001,17.99862 c 0,0.552284 -0.447715,1 -1,1 -0.512836,0 -0.935507,-0.386041 -0.993272,-0.883379 l -0.0067,-0.116621 -1.2e-4,-2.053136 C 9.6441213,15.795988 8.3455551,15.340183 7.1054924,14.584725 l -0.989018,1.713022 -0.064137,0.09763 C 5.7536421,16.797206 5.1945779,16.920191 4.750449,16.663773 4.2721564,16.38763 4.1082812,15.77604 4.3844236,15.297747 v 0 L 5.4822809,13.39653 C 4.3213802,12.398285 3.2168898,11.116576 2.1699375,9.5576199 1.8620295,9.0991321 1.9840986,8.4778455 2.4425864,8.1699375 2.9010743,7.8620295 3.5223609,7.9840986 3.8302689,8.4425864 c 2.516442,3.7470876 5.2320865,5.5575166 8.1698341,5.5575166 2.937748,0 5.653392,-1.810429 8.169834,-5.5575166 z"
+       fill="#000000"
+       id="path1" />
+  </g>
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Ico/Actions/Hide</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
