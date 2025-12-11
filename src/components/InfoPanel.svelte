@@ -155,19 +155,120 @@
       <p>
         The active-to-dormant and dormant-to-active transition rates depend on
         the resource level
-        <Katex>F_3</Katex>:
+        <Katex>F_3</Katex>.
       </p>
+
+      <h4>Linear Resource Scaling</h4>
+      <p>
+        Using the resource scale <Katex>K_F > 0</Katex>:
+      </p>
+      <ul>
+        <li><Katex>F_3 = 0</Katex>: no resource available</li>
+        <li><Katex>F_3 = K_F</Katex>: max resources</li>
+      </ul>
+
+      <h4>
+        1. Decreasing function <Katex>{String.raw`f_{\text{dec}}(F_3)`}</Katex>
+      </h4>
+      <p>Start with the linear form:</p>
       <div class="math-block">
         <Katex displayMode>
-          {String.raw`\begin{aligned}
-r_{ad}(F_3) &= \alpha_{ad}\left(1 - \frac{F_3}{K_F}\right) \quad \text{(high when food is low)} \\[6pt]
-r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F} \qquad \text{(high when food is high)}
-\end{aligned}`}
+          {String.raw`f_{\text{dec}}(F_3) = aF_3 + b`}
         </Katex>
       </div>
-      <p>
-        Where <Katex>K_F</Katex> is the resource scale (<Katex>F_3 = 0</Katex> is no food, <Katex>F_3 = K_F</Katex> is max food).
-      </p>
+      <p><strong>Boundary conditions:</strong></p>
+      <ol>
+        <li>
+          <Katex>{String.raw`f_{\text{dec}}(0) = 1`}</Katex>: no food -&gt; max
+          move to dormancy
+          <div class="math-block">
+            <Katex displayMode>
+              {String.raw`\begin{aligned}
+a(0) + b &= 1 \\
+b &= 1
+\end{aligned}`}
+            </Katex>
+          </div>
+        </li>
+        <li>
+          <Katex>{String.raw`f_{\text{dec}}(K_F) = 0`}</Katex>: max food -&gt;
+          no move to dormancy
+          <div class="math-block">
+            <Katex displayMode>
+              {String.raw`\begin{aligned}
+aK_F + 1 &= 0 \\
+a &= -\frac{1}{K_F}
+\end{aligned}`}
+            </Katex>
+          </div>
+        </li>
+      </ol>
+      <p><strong>Result:</strong></p>
+      <div class="math-block">
+        <Katex displayMode>
+          {String.raw`\boxed{
+f_{\text{dec}}(F_3) = 1 - \frac{F_3}{K_F}
+}`}
+        </Katex>
+      </div>
+
+      <h4>
+        2. Increasing function <Katex>{String.raw`f_{\text{inc}}(F_3)`}</Katex>
+      </h4>
+      <p>Start with the linear form:</p>
+      <div class="math-block">
+        <Katex displayMode>
+          {String.raw`f_{\text{inc}}(F_3) = aF_3 + b`}
+        </Katex>
+      </div>
+      <p><strong>Boundary conditions:</strong></p>
+      <ol>
+        <li>
+          <Katex>{String.raw`f_{\text{inc}}(0) = 0`}</Katex>: no food -&gt; no
+          move to active
+          <div class="math-block">
+            <Katex displayMode>
+              {String.raw`\begin{aligned}
+a(0) + b &= 0 \\
+b &= 0
+\end{aligned}`}
+            </Katex>
+          </div>
+        </li>
+        <li>
+          <Katex>{String.raw`f_{\text{inc}}(K_F) = 1`}</Katex>: max food -&gt;
+          max move to active
+          <div class="math-block">
+            <Katex displayMode>
+              {String.raw`\begin{aligned}
+aK_F + 0 &= 1 \\
+a &= \frac{1}{K_F}
+\end{aligned}`}
+            </Katex>
+          </div>
+        </li>
+      </ol>
+      <p><strong>Result:</strong></p>
+      <div class="math-block">
+        <Katex displayMode>
+          {String.raw`\boxed{
+f_{\text{inc}}(F_3) = \frac{F_3}{K_F}
+}`}
+        </Katex>
+      </div>
+
+      <h4>3. Scale by maximum rate constants</h4>
+      <p>Multiply each linear function by its maximum rate constant:</p>
+      <div class="math-block">
+        <Katex displayMode>
+          {String.raw`\boxed{
+\begin{aligned}
+r_{ad}(F_3) &= \alpha_{ad}\left(1 - \frac{F_3}{K_F}\right) \\[6pt]
+r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F}
+\end{aligned}
+}`}
+        </Katex>
+      </div>
     </section>
   </div>
 </details>
@@ -178,6 +279,7 @@ r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F} \qquad \text{(high when food is high
     padding: 1rem;
     background: #f5f5f5;
     border-radius: 4px;
+    font-size: 1.25rem;
   }
 
   summary {
@@ -192,62 +294,69 @@ r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F} \qquad \text{(high when food is high
   }
 
   .info-content {
-    padding: 1rem;
-    max-width: 800px;
+    padding: 0.75rem;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
   section {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
   }
 
   h3 {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     color: #333;
   }
 
   h4 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-top: 1.125rem;
+    margin-bottom: 0.5625rem;
     color: #555;
+  }
+
+  h5 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #666;
   }
 
   p {
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
-  ul {
+  ul,
+  ol {
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .centered-image {
     text-align: center;
-    margin: 2rem auto;
+    margin: 1.5rem auto;
   }
 
   .centered-image img {
     display: block;
     margin: 0 auto;
-    max-width: 85%;
+    max-width: 95%;
     height: auto;
     border-radius: 4px;
   }
 
   .centered-image figcaption {
     color: #555;
-    margin-top: 0.5rem;
+    margin-top: 0.375rem;
     font-size: 0.9rem;
     line-height: 1.4;
   }
 
   .math-block {
     background: #fff;
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 4px;
     overflow-x: auto;
-    margin: 1rem 0;
+    margin: 0.75rem 0;
   }
 </style>

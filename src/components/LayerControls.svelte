@@ -137,7 +137,7 @@
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.2s;
-    font-size: 0.85rem;
+    font-size: 1.02rem;
     flex: 1;
   }
 
