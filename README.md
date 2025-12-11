@@ -2,15 +2,16 @@
 
 A WebGL-based reaction-diffusion simulation of *Geobacter metallireducens* bacterial colonies, motivated by the search for life on Mars. [Live App Demo](https://travisformayor.github.io/geobacter-sim/)
 
-
-![Layer Inspection](img/dormant-layer.png)
+<p align="center">
+    <img src="img/sim-loop.gif" alt="Simulation Demo" width="90%" style="padding: 0px;">
+</p>
 
 ## Overview
 
 This application simulates the emergent formation of "leopard spot" patterns observed in the Jezero Crater on Mars. It models the lifecycle of bacteria as they consume iron minerals (Fe<sup>3+</sup>), produce waste (Fe<sup>2+</sup>), reproduce, and migrate towards food sources.
 
 <p align="center">
-  <img src="img/mars-banner.png" alt="Banner"><br>
+  <img src="img/mars-banner.png" alt="Banner" width="90%" style="padding: 0px;"><br>
   <small><em>Mars 'Leopard Spots' in Jezero Crater. Credit: NASA/JPL-Caltech/MSSS</em></small>
 </p>
 
@@ -19,8 +20,11 @@ The simulation runs entirely on the GPU using GLSL shaders to solve a system of 
 ## User Guide
 
 <p align="center">
-    <img src="img/spots-separate-fe3.png" alt="Simulation Demo" width="45%" style="padding: 5px;">
-    <img src="img/spots-mixed-fe3.png" alt="Simulation Demo" width="45%" style="padding: 5px;">
+    <img src="img/spots-separate-fe3.png" alt="Simulation Demo" width="65%" style="padding: 0px;">
+</p>
+<p align="center">
+    <img src="img/dormant-layer.png" alt="Simulation Demo" width="45%" style="padding: 2px;">
+    <img src="img/spots-mixed-fe3.png" alt="Simulation Demo" width="45%" style="padding: 2px;">
 </p>
 
 The main canvas shows the bacterial colony evolving in real-time. Hovering over different layers in the top right allows you to inspect individual density fields.
