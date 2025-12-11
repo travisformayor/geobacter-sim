@@ -1,0 +1,17 @@
+# System
+.DS_Store
+
+# IDE
+.vscode/
+
+# Reference
+docs/
+
+# Dependencies
+node_modules/
+
+# Build Files (Svelte + Vite + TypeScript)
+dist/
+build/
+.out/
+.svelte-kit/
