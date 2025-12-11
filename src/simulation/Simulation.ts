@@ -132,10 +132,6 @@ export class Simulation {
     console.log('[Simulation] Reset called - need to reinitialize GPUComputationRenderer');
     this.pause();
 
-    // Note: GPUComputationRenderer doesn't support runtime texture replacement
-    // For now, reset isn't fully functional - would need to recreate entire Simulation
-    // TODO: Either recreate Simulation instance or find GPUComputationRenderer reset method
-
     this.stepCount = 0;
     console.log('[Simulation] Reset - step count reset (texture reset not implemented)');
   }

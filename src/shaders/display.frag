@@ -18,12 +18,8 @@ void main() {
   vec4 simState = texture2D(state, uv);
   float fe3 = simState.r;
   float fe2 = simState.g;
-  float dormantDensity = simState.b;  // Consistent naming with activeDensity
-  float activeDensity = simState.a;   // Renamed from 'active' (reserved GLSL keyword)
-
-  // DEBUG: Show raw RGBA values to diagnose black screen
-  // Uncomment to see raw texture data:
-  // gl_FragColor = simState; return;
+  float dormantDensity = simState.b;
+  float activeDensity = simState.a;
 
   // Color mapping for each field
   vec3 fe3Color = vec3(0.55, 0.25, 0.15);   // Desert red-brown (iron mineral)

@@ -4,9 +4,6 @@
 # IDE
 .vscode/
 
-# Reference
-docs/
-
 # Dependencies
 node_modules/
 
