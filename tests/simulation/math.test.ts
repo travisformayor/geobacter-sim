@@ -96,13 +96,7 @@ describe('clamp', () => {
 });
 
 describe('initializeFe3Field', () => {
-  // Mock noise function that returns consistent values
-  const mockNoise = {
-    perlin2: (x: number, y: number) => {
-      // Simple deterministic function for testing
-      return Math.sin(x) * Math.cos(y);
-    }
-  };
+  const mockNoise = (x: number, y: number) => Math.sin(x) * Math.cos(y);
 
   it('should create correct size array for texture', () => {
     const textureSize = 4;
@@ -137,7 +131,7 @@ describe('initializeFe3Field', () => {
     const textureSize = 4;
 
     // With zero variation, should be all 0.5
-    const noiseReturnsZero = { perlin2: () => 0 };
+    const noiseReturnsZero = () => 0;
     const dataNoVar = initializeFe3Field(textureSize, 1.0, 0, noiseReturnsZero);
 
     for (let i = 0; i < textureSize * textureSize; i++) {
@@ -146,10 +140,7 @@ describe('initializeFe3Field', () => {
   });
 
   it('should clamp all Fe3 values to [0, 1]', () => {
-    // Extreme noise that returns -1 or 1
-    const extremeNoise = {
-      perlin2: (x: number, y: number) => (x + y) % 2 === 0 ? -1 : 1
-    };
+    const extremeNoise = (x: number, y: number) => ((x + y) % 2 === 0 ? -1 : 1);
 
     const textureSize = 4;
     const data = initializeFe3Field(textureSize, 1.0, 1.0, extremeNoise);

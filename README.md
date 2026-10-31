@@ -35,8 +35,8 @@ The main canvas shows the bacterial colony evolving in real-time. Hovering over 
 
 #### Simulation Parameters
 
-*   **Fe3 Perlin Scale**: Controls the scale of the initial food resource pattern.
-*   **Fe3 Perlin Variation**: Controls the intensity/variation of the initial food resources.
+*   **Fe3 Noise Scale**: Controls the scale of the initial food resource pattern.
+*   **Fe3 Noise Variation**: Controls the intensity/variation of the initial food resources.
 *   **Initial Active Seeds**: Number of starting bacterial colonies.
 *   **Seed Radius**: Size of the initial bacterial colonies.
 *   **Reproduction Rate**: How fast bacteria divide.
@@ -112,6 +112,10 @@ npm install
 
 # Run dev server
 npm run dev
+
+# Type-check and run tests
+npm run check
+npm test
 
 # Build for production
 npm run build

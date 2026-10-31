@@ -42,20 +42,19 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 /**
- * Initialize Fe3 field using Perlin noise
- * Using simplenoise library: https://github.com/josephg/noisejs
+ * Initialize Fe3 field using 2D noise
  *
  * @param textureSize - Size of texture (width/height)
- * @param fe3Scale - Spatial scale of Perlin noise
+ * @param fe3Scale - Spatial scale of the noise
  * @param fe3Variation - Amplitude variation [0, 1]
- * @param noise - Perlin noise function from simplenoise
+ * @param noise2D - 2D noise function returning [-1, 1]
  * @returns Float32Array with Fe3 values in R channel (RGBA format)
  */
 export function initializeFe3Field(
   textureSize: number,
   fe3Scale: number,
   fe3Variation: number,
-  noise: { perlin2: (x: number, y: number) => number }
+  noise2D: (x: number, y: number) => number
 ): Float32Array {
   const data = new Float32Array(textureSize * textureSize * 4);
 
@@ -63,8 +62,8 @@ export function initializeFe3Field(
     const x = (i % textureSize) / fe3Scale;
     const y = Math.floor(i / textureSize) / fe3Scale;
 
-    // Perlin noise returns [-1, 1], map to [0, 1] with variation
-    const noiseValue = noise.perlin2(x, y);
+    // Noise returns [-1, 1], map to [0, 1] with variation
+    const noiseValue = noise2D(x, y);
     const fe3Value = clamp(0.5 + fe3Variation * noiseValue, 0, 1);
 
     // Pack into RGBA texture: R = Fe3, G = Fe2, B = Dormant, A = Active

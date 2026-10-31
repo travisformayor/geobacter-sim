@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Katex from "svelte-katex";
+  import Katex from "./Katex.svelte";
 
   // Import images
   import marsBanner from "../assets/mars-banner.png";
@@ -105,7 +105,7 @@
       <ul>
         <li>
           <strong>Fe<sup>3+</sup> concentration:</strong> The food resource gradient,
-          initially generated with Perlin noise.
+          initially generated with simplex noise.
         </li>
         <li>
           <strong>Fe<sup>2+</sup> concentration:</strong> The waste byproduct gradient,
@@ -125,8 +125,9 @@
 
       <h4>ODEs</h4>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`\begin{aligned}
+        <Katex
+          displayMode
+          math={String.raw`\begin{aligned}
 \text{Fe}^{3+}\text{ (resource)} \quad
 \frac{dF_3}{dt}
 &= \underbrace{-\,r_c\,A\,F_3}_{\text{consumption of Fe}^{3+}\text{ by active cells}}
@@ -148,126 +149,129 @@
 \;\underbrace{-\;r_{da}(F_3)\,D}_{\text{to active}}
 \;\underbrace{-\;r_d\,D}_{\text{death}}
 \end{aligned}`}
-        </Katex>
+        />
       </div>
 
       <h4>Stage Transition Rates</h4>
       <p>
         The active-to-dormant and dormant-to-active transition rates depend on
         the resource level
-        <Katex>F_3</Katex>.
+        <Katex math="F_3" />.
       </p>
 
       <h4>Linear Resource Scaling</h4>
       <p>
-        Using the resource scale <Katex>K_F > 0</Katex>:
+        Using the resource scale <Katex math="K_F > 0" />:
       </p>
       <ul>
-        <li><Katex>F_3 = 0</Katex>: no resource available</li>
-        <li><Katex>F_3 = K_F</Katex>: max resources</li>
+        <li><Katex math="F_3 = 0" />: no resource available</li>
+        <li><Katex math="F_3 = K_F" />: max resources</li>
       </ul>
 
       <h4>
-        1. Decreasing function <Katex>{String.raw`f_{\text{dec}}(F_3)`}</Katex>
+        1. Decreasing function <Katex math={String.raw`f_{\text{dec}}(F_3)`} />
       </h4>
       <p>Start with the linear form:</p>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`f_{\text{dec}}(F_3) = aF_3 + b`}
-        </Katex>
+        <Katex displayMode math={String.raw`f_{\text{dec}}(F_3) = aF_3 + b`} />
       </div>
       <p><strong>Boundary conditions:</strong></p>
       <ol>
         <li>
-          <Katex>{String.raw`f_{\text{dec}}(0) = 1`}</Katex>: no food -&gt; max
+          <Katex math={String.raw`f_{\text{dec}}(0) = 1`} />: no food -&gt; max
           move to dormancy
           <div class="math-block">
-            <Katex displayMode>
-              {String.raw`\begin{aligned}
+            <Katex
+              displayMode
+              math={String.raw`\begin{aligned}
 a(0) + b &= 1 \\
 b &= 1
 \end{aligned}`}
-            </Katex>
+            />
           </div>
         </li>
         <li>
-          <Katex>{String.raw`f_{\text{dec}}(K_F) = 0`}</Katex>: max food -&gt;
+          <Katex math={String.raw`f_{\text{dec}}(K_F) = 0`} />: max food -&gt;
           no move to dormancy
           <div class="math-block">
-            <Katex displayMode>
-              {String.raw`\begin{aligned}
+            <Katex
+              displayMode
+              math={String.raw`\begin{aligned}
 aK_F + 1 &= 0 \\
 a &= -\frac{1}{K_F}
 \end{aligned}`}
-            </Katex>
+            />
           </div>
         </li>
       </ol>
       <p><strong>Result:</strong></p>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`\boxed{
+        <Katex
+          displayMode
+          math={String.raw`\boxed{
 f_{\text{dec}}(F_3) = 1 - \frac{F_3}{K_F}
 }`}
-        </Katex>
+        />
       </div>
 
       <h4>
-        2. Increasing function <Katex>{String.raw`f_{\text{inc}}(F_3)`}</Katex>
+        2. Increasing function <Katex math={String.raw`f_{\text{inc}}(F_3)`} />
       </h4>
       <p>Start with the linear form:</p>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`f_{\text{inc}}(F_3) = aF_3 + b`}
-        </Katex>
+        <Katex displayMode math={String.raw`f_{\text{inc}}(F_3) = aF_3 + b`} />
       </div>
       <p><strong>Boundary conditions:</strong></p>
       <ol>
         <li>
-          <Katex>{String.raw`f_{\text{inc}}(0) = 0`}</Katex>: no food -&gt; no
+          <Katex math={String.raw`f_{\text{inc}}(0) = 0`} />: no food -&gt; no
           move to active
           <div class="math-block">
-            <Katex displayMode>
-              {String.raw`\begin{aligned}
+            <Katex
+              displayMode
+              math={String.raw`\begin{aligned}
 a(0) + b &= 0 \\
 b &= 0
 \end{aligned}`}
-            </Katex>
+            />
           </div>
         </li>
         <li>
-          <Katex>{String.raw`f_{\text{inc}}(K_F) = 1`}</Katex>: max food -&gt;
+          <Katex math={String.raw`f_{\text{inc}}(K_F) = 1`} />: max food -&gt;
           max move to active
           <div class="math-block">
-            <Katex displayMode>
-              {String.raw`\begin{aligned}
+            <Katex
+              displayMode
+              math={String.raw`\begin{aligned}
 aK_F + 0 &= 1 \\
 a &= \frac{1}{K_F}
 \end{aligned}`}
-            </Katex>
+            />
           </div>
         </li>
       </ol>
       <p><strong>Result:</strong></p>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`\boxed{
+        <Katex
+          displayMode
+          math={String.raw`\boxed{
 f_{\text{inc}}(F_3) = \frac{F_3}{K_F}
 }`}
-        </Katex>
+        />
       </div>
 
       <h4>3. Scale by maximum rate constants</h4>
       <p>Multiply each linear function by its maximum rate constant:</p>
       <div class="math-block">
-        <Katex displayMode>
-          {String.raw`\boxed{
+        <Katex
+          displayMode
+          math={String.raw`\boxed{
 \begin{aligned}
 r_{ad}(F_3) &= \alpha_{ad}\left(1 - \frac{F_3}{K_F}\right) \\[6pt]
 r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F}
 \end{aligned}
 }`}
-        </Katex>
+        />
       </div>
     </section>
   </div>

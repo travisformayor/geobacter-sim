@@ -15,8 +15,8 @@ export interface ParameterConfig {
 
 export const parameterConfig: Record<keyof SimulationParameters, ParameterConfig> = {
   // Initial conditions (top of UI for easy access)
-  fe3Scale: { default: 20.0, min: 10, max: 40, step: 0.5, label: "Fe3 Perlin Scale" },
-  fe3Variation: { default: 0.5, min: 0.2, max: 1, step: 0.01, label: "Fe3 Perlin Variation" },
+  fe3Scale: { default: 30.0, min: 20, max: 50, step: 0.5, label: "Fe3 Noise Scale" },
+  fe3Variation: { default: 0.5, min: 0.2, max: 1, step: 0.01, label: "Fe3 Noise Variation" },
   initialActiveSeeds: { default: 5, min: 1, max: 20, step: 1, label: "Initial Active Seeds" },
   seedPixelRadius: { default: 5, min: 1, max: 20, step: 1, label: "Seed Radius (px)" },
 

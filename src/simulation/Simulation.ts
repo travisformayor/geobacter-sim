@@ -25,7 +25,7 @@ import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRe
 import type { SimulationParameters } from '../types';
 import { initializeFe3Field } from '../utils/math';
 import { defaultParameters } from './parameters';
-import noise from 'simplenoise';
+import { createNoise2D } from 'simplex-noise';
 
 // Import shaders as strings
 // Using single combined compute shader following Jason Webb's pattern
@@ -33,8 +33,7 @@ import noise from 'simplenoise';
 import computeFragCode from '../shaders/compute.frag?raw';
 import displayFragCode from '../shaders/display.frag?raw';
 
-// Use fixed seed for Perlin noise (consistent pattern as params change)
-noise.seed(100);
+const noise2D = createNoise2D();
 
 export class Simulation {
   private renderer: WebGLRenderer;
@@ -202,10 +201,10 @@ export class Simulation {
       textureSize,
       fe3Scale,
       fe3Variation,
-      noise
+      noise2D
     );
 
-    console.log('[Simulation] Perlin data generated');
+    console.log('[Simulation] Noise data generated');
 
     // Place Active bacteria seed patches (circular areas, not single pixels)
     for (let i = 0; i < initialActiveSeeds; i++) {
