@@ -319,12 +319,6 @@ r_{da}(F_3) &= \alpha_{da}\,\frac{F_3}{K_F}
     color: #555;
   }
 
-  h5 {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    color: #666;
-  }
-
   p {
     line-height: 1.6;
     margin-bottom: 0.75rem;

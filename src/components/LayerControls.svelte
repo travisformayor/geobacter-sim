@@ -32,54 +32,50 @@
     }
   }
 
+  function previewLayer(event: PointerEvent, layer: LayerKey) {
+    if (event.pointerType !== 'touch') updateVisibility(layer);
+  }
+
   // Initialize visibility based on toggles
   updateVisibility();
 </script>
 
-<div class="layer-controls" on:mouseleave={() => updateVisibility()}>
+<section class="layer-controls" aria-label="Layers" on:mouseleave={() => updateVisibility()}>
   <h4>Layers</h4>
-  <div class="layer-list">
-    <div class="layer-row">
-      <button class="eye-btn" on:click={() => toggleLayer('fe3')} title="Toggle visibility">
-        <img src={$layerToggles.fe3 ? eyeOpen : eyeClosed} alt="toggle" />
-      </button>
-      <div class="layer-item" on:mouseenter={() => updateVisibility('fe3')}>
+  <ul class="layer-list">
+    <li>
+      <button type="button" class="layer-row" title="Toggle visibility" on:click={() => toggleLayer('fe3')} on:pointerenter={(e) => previewLayer(e, 'fe3')}>
+        <img class="eye" src={$layerToggles.fe3 ? eyeOpen : eyeClosed} alt="toggle" />
         <span class="layer-color fe3"></span>
         <span class:hidden={!$layerToggles.fe3}>Fe3</span>
-      </div>
-    </div>
-
-    <div class="layer-row">
-      <button class="eye-btn" on:click={() => toggleLayer('fe2')} title="Toggle visibility">
-        <img src={$layerToggles.fe2 ? eyeOpen : eyeClosed} alt="toggle" />
       </button>
-      <div class="layer-item" on:mouseenter={() => updateVisibility('fe2')}>
+    </li>
+
+    <li>
+      <button type="button" class="layer-row" title="Toggle visibility" on:click={() => toggleLayer('fe2')} on:pointerenter={(e) => previewLayer(e, 'fe2')}>
+        <img class="eye" src={$layerToggles.fe2 ? eyeOpen : eyeClosed} alt="toggle" />
         <span class="layer-color fe2"></span>
         <span class:hidden={!$layerToggles.fe2}>Fe2</span>
-      </div>
-    </div>
-
-    <div class="layer-row">
-      <button class="eye-btn" on:click={() => toggleLayer('active')} title="Toggle visibility">
-        <img src={$layerToggles.active ? eyeOpen : eyeClosed} alt="toggle" />
       </button>
-      <div class="layer-item" on:mouseenter={() => updateVisibility('active')}>
+    </li>
+
+    <li>
+      <button type="button" class="layer-row" title="Toggle visibility" on:click={() => toggleLayer('active')} on:pointerenter={(e) => previewLayer(e, 'active')}>
+        <img class="eye" src={$layerToggles.active ? eyeOpen : eyeClosed} alt="toggle" />
         <span class="layer-color active"></span>
         <span class:hidden={!$layerToggles.active}>Active</span>
-      </div>
-    </div>
-
-    <div class="layer-row">
-      <button class="eye-btn" on:click={() => toggleLayer('dormant')} title="Toggle visibility">
-        <img src={$layerToggles.dormant ? eyeOpen : eyeClosed} alt="toggle" />
       </button>
-      <div class="layer-item" on:mouseenter={() => updateVisibility('dormant')}>
+    </li>
+
+    <li>
+      <button type="button" class="layer-row" title="Toggle visibility" on:click={() => toggleLayer('dormant')} on:pointerenter={(e) => previewLayer(e, 'dormant')}>
+        <img class="eye" src={$layerToggles.dormant ? eyeOpen : eyeClosed} alt="toggle" />
         <span class="layer-color dormant"></span>
         <span class:hidden={!$layerToggles.dormant}>Dormant</span>
-      </div>
-    </div>
-  </div>
-</div>
+      </button>
+    </li>
+  </ul>
+</section>
 
 <style>
   .layer-controls {
@@ -99,53 +95,47 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .layer-row {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-  }
-
-  .eye-btn {
-    background: none;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.4rem;
     border: none;
+    border-radius: 4px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 1.02rem;
+    text-align: left;
     cursor: pointer;
-    padding: 0.2rem;
-    line-height: 1;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    display: flex;
-    align-items: center;
+    transition: background 0.2s;
   }
 
-  .eye-btn:hover {
-    opacity: 1;
-  }
-
-  .eye-btn img {
+  .eye {
     width: 18px;
     height: 18px;
     display: block;
+    opacity: 0.7;
+    transition: opacity 0.2s;
   }
 
-  .layer-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
-    font-size: 1.02rem;
-    flex: 1;
+  @media (hover: hover) {
+    .layer-row:hover {
+      background: #e8e8e8;
+    }
+
+    .layer-row:hover .eye {
+      opacity: 1;
+    }
   }
 
-  .layer-item:hover {
-    background: #e8e8e8;
-  }
-
-  .layer-item .hidden {
+  .layer-row .hidden {
     text-decoration: line-through;
     opacity: 0.5;
   }
