@@ -1,14 +1,18 @@
 # System
 .DS_Store
+*.local
+.env
+.env.*
 
-# IDE
-.vscode/
+# Editor
+.vscode
 
 # Dependencies
-node_modules/
+node_modules
 
-# Build Files (Svelte + Vite + TypeScript)
-dist/
-build/
-.out/
-.svelte-kit/
+# Build and logs
+dist
+dist-ssr
+logs
+*.log
+npm-debug.log*
