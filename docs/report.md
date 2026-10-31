@@ -60,7 +60,7 @@ In March of 2025, NASA announced that the Mars Perseverance rover had observed p
 The Jezero Crater's low-temperature past rules out known non-biological causes for these reactions, but we are not currently able to confirm a biological cause either (Hurowitz et al., 2025). However, bacteria capable of creating similar iron reduction patterns do exist on Earth, making the Jezero Crater discovery possibly the strongest sign of extraterrestrial life we currently have. This news inspired this project, to understand how Earth bacteria create these same kind of patterns and to learn how a hypothetical Martian organism could have worked.
 
 <figure class="centered-image">
-  <img src="img/mars-banner.png" alt="Leopard Spots on Martian Rock" style="width: 85%;"/>
+  <img src="../src/assets/mars-banner.png" alt="Leopard Spots on Martian Rock" style="width: 85%;"/>
   <figcaption>
     Fig 1. Mars 'Leopard Spots' in Jezero Crater.
     <br>
@@ -73,7 +73,7 @@ The Jezero Crater's low-temperature past rules out known non-biological causes f
 *Geobacter* are a genus of bacteria that can live off the energy released by chemical reactions involving inorganic compounds (like those found in minerals), a process known as *chemosynthesis* (Geobacter, n.d.; Chemosynthesis, n.d.). As *Geobacter* bacteria deplete local resources and propagate outward, they create a chemical reaction front, which over time creates a pattern in the inorganic medium. This pattern is not directly found in any single bacterium’s lifecycle but instead exists as an *emergent property* from the interaction between the population and the environment.
 
 <figure class="centered-image">
-  <img src="img/earth-banner.png" alt="Earth reduction patterns collage" style="width: 85%;"/>
+  <img src="../src/assets/earth-banner.png" alt="Earth reduction patterns collage" style="width: 85%;"/>
   <figcaption>
     Fig 2. Geobacter reduction spots.
     <br>
@@ -103,7 +103,7 @@ The model tracks four density fields:
 4.  **Dormant Bacteria (D):** The inactive population that can reactivate when Fe<sup>3+</sup> levels improve.
 
 <figure class="centered-image">
-  <img src="img/flow-diagram.png" alt="Geobacter flow diagram" style="width: 60%;">
+  <img src="../src/assets/flow-diagram.png" alt="Geobacter flow diagram" style="width: 60%;">
   <figcaption>
     Fig 3. <em>Geobacter metallireducens</em> flow diagram used to derive the ODE system.
   </figcaption>

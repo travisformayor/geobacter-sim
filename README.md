@@ -11,7 +11,7 @@ A WebGL-based reaction-diffusion simulation of *Geobacter metallireducens* bacte
 This application simulates the emergent formation of "leopard spot" patterns observed in the Jezero Crater on Mars. It models the lifecycle of bacteria as they consume iron minerals (Fe<sup>3+</sup>), produce waste (Fe<sup>2+</sup>), reproduce, and migrate towards food sources.
 
 <p align="center">
-  <img src="img/mars-banner.png" alt="Banner" width="90%" style="padding: 0px;"><br>
+  <img src="src/assets/mars-banner.png" alt="Banner" width="90%" style="padding: 0px;"><br>
   <small><em>Mars 'Leopard Spots' in Jezero Crater. Credit: NASA/JPL-Caltech/MSSS</em></small>
 </p>
 
@@ -61,7 +61,7 @@ This project is built with:
 The simulation defines spatial density fields for **Food** ($F_3$), **Waste** ($F_2$), **Active Bacteria** ($A$), and **Dormant Bacteria** ($D$). These fields change over time according to this flow diagram:
 
 <p align="center">
-    <img src="img/flow-diagram.png" alt="System Flow Diagram" width="70%" style="padding: 10px;">
+    <img src="src/assets/flow-diagram.png" alt="System Flow Diagram" width="70%" style="padding: 10px;">
 </p>
 
 The flow diagram can be modeled mathematically with the following system of Ordinary Differential Equations (ODEs):
